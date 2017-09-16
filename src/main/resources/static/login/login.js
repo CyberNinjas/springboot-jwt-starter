@@ -25,6 +25,8 @@ angular.module('myApp.login', ['ngRoute'])
     })
     .then(function(res) {
       $rootScope.authenticated = true;
+      $rootScope.access_token = res.data.access_token;
+      $http.defaults.headers.common['Authorization'] = 'Bearer ' + $rootScope.access_token;
       $location.path("#/");
       $rootScope.selectedTab = "/";
       $scope.error = false;
