@@ -7,8 +7,8 @@ angular.module('myApp.login', ['ngRoute'])
   });
 }])
 
-.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location', '$httpParamSerializerJQLike',
-  function($scope, $rootScope, $http, $location, $httpParamSerializerJQLike) {
+.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location', '$httpParamSerializerJQLike', '$interval',
+  function($scope, $rootScope, $http, $location, $httpParamSerializerJQLike, $interval) {
   $scope.error = false;
   $rootScope.selectedTab = $location.path() || '/';
 
@@ -30,6 +30,13 @@ angular.module('myApp.login', ['ngRoute'])
       $location.path("#/");
       $rootScope.selectedTab = "/";
       $scope.error = false;
+      $interval(function(){
+        $http({method: 'GET', url: 'auth/refresh'})
+            .success(function(data) {
+                    $rootScope.access_token = data.access_token;
+                    $http.defaults.headers.common['Authorization'] = 'Bearer ' + $rootScope.access_token;
+            });
+        }, 10000);
     })
     .catch(function() {
       $rootScope.authenticated = false;

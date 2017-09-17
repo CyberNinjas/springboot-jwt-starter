@@ -54,10 +54,12 @@ function DashboardCtrl($scope, $rootScope, $http, authService, isAuthenticated) 
 	}
 }
 DashboardCtrl.resolve = {
-	isAuthenticated : function($q, $http) {
+	isAuthenticated : function($q, $http, $rootScope) {
 		var deferred = $q.defer();
 		$http({method: 'GET', url: 'auth/refresh'})
 		.success(function(data) {
+                        $rootScope.access_token = data.access_token;
+                        $http.defaults.headers.common['Authorization'] = 'Bearer ' + $rootScope.access_token;
 			deferred.resolve(data.access_token !== null);
 		})
 		.error(function(data){
