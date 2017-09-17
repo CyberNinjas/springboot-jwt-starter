@@ -8,7 +8,7 @@
 	<version>0.1.0</version>
 	<packaging>jar</packaging>
 
-	<name>springboot-security-jwt</name>
+	<name>token-app</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
